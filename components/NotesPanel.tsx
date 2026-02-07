@@ -21,10 +21,10 @@ export function NotesPanel() {
   };
 
   return (
-    <div className="relative bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg p-4 flex-1 flex flex-col geo-corner">
+    <div className="relative bg-[var(--bg-elevated)] border border-[var(--border-default)] rounded-lg p-4 flex-1 flex flex-col geo-corner shadow-[0_1px_4px_rgba(0,0,0,0.3)]">
       <div className="flex items-center gap-2.5 mb-3">
         <div className="w-1.5 h-1.5 rounded-sm bg-[var(--col-progress)] opacity-50 rotate-45" />
-        <h3 className="text-xs font-medium uppercase tracking-[0.12em] text-[var(--text-secondary)]">
+        <h3 className="text-xs font-semibold uppercase tracking-[0.12em] text-[var(--text-primary)]">
           Notes
         </h3>
       </div>

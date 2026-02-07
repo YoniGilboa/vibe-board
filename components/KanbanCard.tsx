@@ -31,8 +31,8 @@ export function KanbanCard({ task, onDelete, columnColor }: KanbanCardProps) {
       ref={setNodeRef}
       style={style}
       className={`
-        relative bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-lg p-3.5 mb-2
-        group cursor-default card-hover
+        relative bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-lg p-3.5 mb-2
+        group cursor-default card-hover shadow-[0_1px_3px_rgba(0,0,0,0.25)]
         ${isDragging ? 'drag-ghost shadow-xl border-[var(--border-strong)]' : ''}
       `}
     >

@@ -39,10 +39,10 @@ export function KanbanColumn({ id, tasks, onDeleteTask, onAddClick }: KanbanColu
         >
           {COLUMN_ICONS[id]}
         </span>
-        <h3 className="text-xs font-medium uppercase tracking-[0.12em] text-[var(--text-secondary)]">
+        <h3 className="text-xs font-semibold uppercase tracking-[0.12em] text-[var(--text-primary)]">
           {COLUMN_TITLES[id]}
         </h3>
-        <span className="text-[10px] font-mono text-[var(--text-muted)]">{tasks.length}</span>
+        <span className="text-[10px] font-mono text-[var(--text-tertiary)]">{tasks.length}</span>
         <div className="flex-1 h-px bg-[var(--border-subtle)]" />
       </div>
 
@@ -51,9 +51,9 @@ export function KanbanColumn({ id, tasks, onDeleteTask, onAddClick }: KanbanColu
         ref={setNodeRef}
         className="relative min-h-[200px] p-2.5 rounded-lg border transition-all duration-200"
         style={{
-          backgroundColor: isOver ? 'var(--bg-elevated)' : 'var(--bg-surface)',
-          borderColor: isOver ? color : 'var(--border-subtle)',
-          boxShadow: isOver ? `0 0 20px ${color}10` : 'none',
+          backgroundColor: isOver ? 'var(--bg-elevated)' : 'var(--bg-elevated)',
+          borderColor: isOver ? color : 'var(--border-default)',
+          boxShadow: isOver ? `0 0 20px ${color}10` : '0 1px 4px rgba(0,0,0,0.3)',
         }}
       >
         {/* Top indicator bar */}
