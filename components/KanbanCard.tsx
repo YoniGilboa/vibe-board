@@ -31,16 +31,16 @@ export function KanbanCard({ task, onDelete, columnColor }: KanbanCardProps) {
       ref={setNodeRef}
       style={style}
       className={`
-        relative bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-lg p-3.5 mb-2
-        group cursor-default card-hover shadow-[0_1px_3px_rgba(0,0,0,0.25)]
-        ${isDragging ? 'drag-ghost shadow-xl border-[var(--border-strong)]' : ''}
+        relative bg-[var(--bg-surface)] border border-[var(--border-strong)] rounded-lg p-3.5 mb-2
+        group cursor-default card-hover shadow-[0_2px_6px_rgba(0,0,0,0.3)]
+        ${isDragging ? 'drag-ghost shadow-xl border-[var(--accent-amber)]' : ''}
       `}
     >
       {/* Left color accent */}
       {columnColor && (
         <div
           className="absolute left-0 top-2 bottom-2 w-[2px] rounded-full"
-          style={{ backgroundColor: columnColor, opacity: 0.3 }}
+          style={{ backgroundColor: columnColor, opacity: 0.75 }}
         />
       )}
 

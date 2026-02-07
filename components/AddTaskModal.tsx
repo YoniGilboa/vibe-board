@@ -54,7 +54,7 @@ export function AddTaskModal({ isOpen, column, onClose, onAdd }: AddTaskModalPro
         {/* Header */}
         <div className="flex items-center justify-between mb-5">
           <div>
-            <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--text-muted)] mb-0.5">
+            <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--text-tertiary)] mb-0.5">
               new task
             </p>
             <h2 className="text-base font-medium text-[var(--text-primary)]">

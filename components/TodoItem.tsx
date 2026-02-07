@@ -17,7 +17,7 @@ export function TodoItem({ todo, onToggle, onDelete }: TodoItemProps) {
         className="flex-shrink-0 w-4 h-4 rounded border flex items-center justify-center transition-all"
         style={{
           backgroundColor: todo.completed ? 'var(--accent-amber)' : 'transparent',
-          borderColor: todo.completed ? 'var(--accent-amber)' : 'var(--text-muted)',
+          borderColor: todo.completed ? 'var(--accent-amber)' : 'var(--text-tertiary)',
           color: todo.completed ? 'var(--bg-deep)' : 'transparent',
         }}
       >

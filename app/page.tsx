@@ -11,7 +11,7 @@ export default function Home() {
       <header className="mb-8 animate-fade-up">
         <div className="flex items-end gap-4">
           <div>
-            <p className="text-[10px] font-mono uppercase tracking-[0.25em] text-[var(--text-tertiary)] mb-1">
+            <p className="text-[10px] font-mono uppercase tracking-[0.25em] text-[var(--accent-amber)] mb-1">
               workspace
             </p>
             <h1 className="text-2xl font-light tracking-tight text-[var(--text-primary)] header-accent">
@@ -19,7 +19,7 @@ export default function Home() {
             </h1>
           </div>
           <div className="hidden md:block h-px flex-1 bg-gradient-to-r from-[var(--border-default)] to-transparent mb-1.5" />
-          <p className="hidden md:block text-[10px] font-mono text-[var(--text-tertiary)] mb-1">
+          <p className="hidden md:block text-[10px] font-mono text-[var(--text-secondary)] mb-1">
             {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
           </p>
         </div>

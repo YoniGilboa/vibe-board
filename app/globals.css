@@ -1,25 +1,25 @@
 @import "tailwindcss";
 
 :root {
-  --bg-deep: #141210;
-  --bg-surface: #1c1a17;
-  --bg-elevated: #242119;
-  --bg-card: #1e1c18;
-  --border-subtle: rgba(255, 200, 100, 0.06);
-  --border-default: rgba(255, 200, 100, 0.1);
-  --border-strong: rgba(255, 200, 100, 0.18);
-  --text-primary: #ede8df;
-  --text-secondary: #a89f8f;
-  --text-tertiary: #6e6555;
-  --text-muted: #4a4238;
-  --accent-amber: #d4a053;
-  --accent-amber-dim: rgba(212, 160, 83, 0.15);
-  --accent-amber-glow: rgba(212, 160, 83, 0.06);
-  --col-todo: #c97b3a;
-  --col-progress: #7a9ec9;
-  --col-complete: #6b9e6b;
-  --danger: #c97070;
-  --danger-dim: rgba(201, 112, 112, 0.12);
+  --bg-deep: #1a1816;
+  --bg-surface: #3f3a33;
+  --bg-elevated: #302c27;
+  --bg-card: #282520;
+  --border-subtle: rgba(255, 200, 100, 0.10);
+  --border-default: rgba(255, 200, 100, 0.18);
+  --border-strong: rgba(255, 200, 100, 0.28);
+  --text-primary: #f0ebe3;
+  --text-secondary: #b8ae9e;
+  --text-tertiary: #9e9484;
+  --text-muted: #7a7060;
+  --accent-amber: #e0ad5a;
+  --accent-amber-dim: rgba(224, 173, 90, 0.18);
+  --accent-amber-glow: rgba(224, 173, 90, 0.08);
+  --col-todo: #e08a3a;
+  --col-progress: #8bb4de;
+  --col-complete: #7db87d;
+  --danger: #d47a7a;
+  --danger-dim: rgba(212, 122, 122, 0.15);
   --grain-opacity: 0.03;
 }
 
@@ -57,7 +57,7 @@ body::after {
   left: -10%;
   width: 60%;
   height: 60%;
-  background: radial-gradient(ellipse, rgba(212, 160, 83, 0.03) 0%, transparent 70%);
+  background: radial-gradient(ellipse, rgba(224, 173, 90, 0.05) 0%, transparent 70%);
   pointer-events: none;
   z-index: 0;
 }
@@ -163,7 +163,7 @@ body::after {
   border-top: 2px solid var(--accent-amber);
   border-right: 2px solid var(--accent-amber);
   border-radius: 0 6px 0 0;
-  opacity: 0.3;
+  opacity: 0.5;
 }
 
 /* Focus ring */

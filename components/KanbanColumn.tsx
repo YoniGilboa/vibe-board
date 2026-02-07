@@ -39,7 +39,10 @@ export function KanbanColumn({ id, tasks, onDeleteTask, onAddClick }: KanbanColu
         >
           {COLUMN_ICONS[id]}
         </span>
-        <h3 className="text-xs font-semibold uppercase tracking-[0.12em] text-[var(--text-primary)]">
+        <h3
+          className="text-sm font-bold uppercase tracking-[0.1em]"
+          style={{ color }}
+        >
           {COLUMN_TITLES[id]}
         </h3>
         <span className="text-[10px] font-mono text-[var(--text-tertiary)]">{tasks.length}</span>
@@ -53,13 +56,13 @@ export function KanbanColumn({ id, tasks, onDeleteTask, onAddClick }: KanbanColu
         style={{
           backgroundColor: isOver ? 'var(--bg-elevated)' : 'var(--bg-elevated)',
           borderColor: isOver ? color : 'var(--border-default)',
-          boxShadow: isOver ? `0 0 20px ${color}10` : '0 1px 4px rgba(0,0,0,0.3)',
+          boxShadow: isOver ? `0 0 20px ${color}10` : '0 1px 4px rgba(0,0,0,0.2)',
         }}
       >
         {/* Top indicator bar */}
         <div
           className="col-indicator"
-          style={{ background: `linear-gradient(90deg, ${color}, transparent)`, opacity: 0.4 }}
+          style={{ background: `linear-gradient(90deg, ${color}, transparent)`, opacity: 0.7 }}
         />
 
         <SortableContext items={tasks.map(t => t.id)} strategy={verticalListSortingStrategy}>
@@ -69,7 +72,7 @@ export function KanbanColumn({ id, tasks, onDeleteTask, onAddClick }: KanbanColu
         </SortableContext>
 
         {tasks.length === 0 && (
-          <div className="flex items-center justify-center h-20 text-[11px] text-[var(--text-muted)] italic">
+          <div className="flex items-center justify-center h-20 text-[11px] text-[var(--text-tertiary)] italic">
             Drop tasks here
           </div>
         )}
@@ -77,7 +80,7 @@ export function KanbanColumn({ id, tasks, onDeleteTask, onAddClick }: KanbanColu
         {id !== 'complete' && (
           <button
             onClick={onAddClick}
-            className="w-full py-2 px-3 mt-1 text-xs text-[var(--text-muted)] hover:text-[var(--text-secondary)] hover:bg-[var(--bg-elevated)] rounded-md flex items-center justify-center gap-1.5 transition-colors btn-press"
+            className="w-full py-2 px-3 mt-1 text-xs text-[var(--text-muted)] hover:text-[var(--text-secondary)] hover:bg-[var(--bg-surface)] rounded-md flex items-center justify-center gap-1.5 transition-colors btn-press"
           >
             <Plus size={13} />
             Add task
