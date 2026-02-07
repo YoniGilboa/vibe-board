@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import {
   DndContext,
   DragEndEvent,
@@ -14,10 +14,11 @@ import {
 } from '@dnd-kit/core';
 import { arrayMove } from '@dnd-kit/sortable';
 import { useKanban } from '@/hooks/useKanban';
-import { ColumnId, KanbanTask } from '@/types';
+import { ColumnId, KanbanTask, Priority } from '@/types';
 import { KanbanColumn } from './KanbanColumn';
 import { KanbanCard } from './KanbanCard';
 import { AddTaskModal } from './AddTaskModal';
+import { PriorityFilter } from './PriorityFilter';
 
 const COLUMNS: ColumnId[] = ['todo', 'in-progress', 'complete'];
 
@@ -26,6 +27,13 @@ export function KanbanBoard() {
   const [activeTask, setActiveTask] = useState<KanbanTask | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalColumn, setModalColumn] = useState<ColumnId>('todo');
+  const [priorityFilter, setPriorityFilter] = useState<'all' | Priority>('all');
+
+  const getFilteredTasksByColumn = useCallback((column: ColumnId) => {
+    const sorted = getTasksByColumn(column);
+    if (priorityFilter === 'all') return sorted;
+    return sorted.filter(t => (t.priority ?? 'medium') === priorityFilter);
+  }, [getTasksByColumn, priorityFilter]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -51,7 +59,7 @@ export function KanbanBoard() {
 
     if (COLUMNS.includes(overId as ColumnId)) {
       if (activeTask.column !== overId) {
-        const targetTasks = getTasksByColumn(overId as ColumnId);
+        const targetTasks = getFilteredTasksByColumn(overId as ColumnId);
         moveTask(activeTask.id, overId as ColumnId, targetTasks.length);
       }
       return;
@@ -61,7 +69,7 @@ export function KanbanBoard() {
     if (!overTask) return;
 
     if (activeTask.column !== overTask.column) {
-      const targetTasks = getTasksByColumn(overTask.column);
+      const targetTasks = getFilteredTasksByColumn(overTask.column);
       const overIndex = targetTasks.findIndex(t => t.id === overId);
       moveTask(activeTask.id, overTask.column, overIndex);
     }
@@ -84,7 +92,7 @@ export function KanbanBoard() {
 
     const overTask = tasks.find(t => t.id === overId);
     if (overTask && activeTask.column === overTask.column && activeTask.id !== overTask.id) {
-      const columnTasks = getTasksByColumn(activeTask.column);
+      const columnTasks = getFilteredTasksByColumn(activeTask.column);
       const oldIndex = columnTasks.findIndex(t => t.id === active.id);
       const newIndex = columnTasks.findIndex(t => t.id === over.id);
 
@@ -104,6 +112,7 @@ export function KanbanBoard() {
 
   return (
     <div className="flex-1">
+      <PriorityFilter value={priorityFilter} onChange={setPriorityFilter} tasks={tasks} />
       <DndContext
         sensors={sensors}
         collisionDetection={closestCorners}
@@ -116,7 +125,7 @@ export function KanbanBoard() {
             <KanbanColumn
               key={columnId}
               id={columnId}
-              tasks={getTasksByColumn(columnId)}
+              tasks={getFilteredTasksByColumn(columnId)}
               onDeleteTask={deleteTask}
               onAddClick={() => openAddModal(columnId)}
             />

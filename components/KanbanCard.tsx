@@ -3,7 +3,7 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Trash2, GripVertical } from 'lucide-react';
-import { KanbanTask } from '@/types';
+import { KanbanTask, PRIORITY_LABELS } from '@/types';
 
 interface KanbanCardProps {
   task: KanbanTask;
@@ -61,6 +61,18 @@ export function KanbanCard({ task, onDelete, columnColor }: KanbanCardProps) {
               {task.description}
             </p>
           )}
+          <div className="flex items-center gap-1.5 mt-2">
+            <span
+              className="w-[6px] h-[6px] rounded-full flex-shrink-0"
+              style={{ backgroundColor: `var(--priority-${task.priority ?? 'medium'})` }}
+            />
+            <span
+              className="text-[10px] font-mono uppercase tracking-wider"
+              style={{ color: `var(--priority-${task.priority ?? 'medium'})` }}
+            >
+              {PRIORITY_LABELS[task.priority ?? 'medium']}
+            </span>
+          </div>
         </div>
         <button
           onClick={() => onDelete(task.id)}

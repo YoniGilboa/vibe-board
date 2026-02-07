@@ -20,6 +20,12 @@
   --col-complete: #7db87d;
   --danger: #d47a7a;
   --danger-dim: rgba(212, 122, 122, 0.15);
+  --priority-high: #e07a5a;
+  --priority-high-dim: rgba(224, 122, 90, 0.18);
+  --priority-medium: #8bb4de;
+  --priority-medium-dim: rgba(139, 180, 222, 0.18);
+  --priority-low: #9e9484;
+  --priority-low-dim: rgba(158, 148, 132, 0.18);
   --grain-opacity: 0.03;
 }
 

@@ -2,24 +2,26 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { X } from 'lucide-react';
-import { ColumnId, COLUMN_TITLES } from '@/types';
+import { ColumnId, COLUMN_TITLES, Priority, PRIORITY_LABELS } from '@/types';
 
 interface AddTaskModalProps {
   isOpen: boolean;
   column: ColumnId;
   onClose: () => void;
-  onAdd: (title: string, description: string, column: ColumnId) => void;
+  onAdd: (title: string, description: string, column: ColumnId, priority: Priority) => void;
 }
 
 export function AddTaskModal({ isOpen, column, onClose, onAdd }: AddTaskModalProps) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [priority, setPriority] = useState<Priority>('medium');
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (isOpen) {
       setTitle('');
       setDescription('');
+      setPriority('medium');
       setTimeout(() => inputRef.current?.focus(), 0);
     }
   }, [isOpen]);
@@ -37,7 +39,7 @@ export function AddTaskModal({ isOpen, column, onClose, onAdd }: AddTaskModalPro
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (title.trim()) {
-      onAdd(title.trim(), description.trim(), column);
+      onAdd(title.trim(), description.trim(), column, priority);
       onClose();
     }
   };
@@ -95,6 +97,34 @@ export function AddTaskModal({ isOpen, column, onClose, onAdd }: AddTaskModalPro
                 className="w-full bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg px-3.5 py-2.5 text-sm text-[var(--text-primary)] resize-none transition-colors"
                 placeholder="Add more details..."
               />
+            </div>
+            <div>
+              <label className="block text-[11px] font-mono uppercase tracking-wider text-[var(--text-tertiary)] mb-2">
+                Priority
+              </label>
+              <div className="flex gap-1 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-lg p-1">
+                {(['high', 'medium', 'low'] as Priority[]).map((p) => (
+                  <button
+                    key={p}
+                    type="button"
+                    onClick={() => setPriority(p)}
+                    className="flex-1 flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-md text-[12px] font-medium transition-all"
+                    style={{
+                      backgroundColor: priority === p ? `var(--priority-${p}-dim)` : 'transparent',
+                      borderWidth: '1px',
+                      borderStyle: 'solid',
+                      borderColor: priority === p ? `var(--priority-${p})` : 'transparent',
+                      color: priority === p ? `var(--priority-${p})` : 'var(--text-muted)',
+                    }}
+                  >
+                    <span
+                      className="w-[6px] h-[6px] rounded-full flex-shrink-0"
+                      style={{ backgroundColor: `var(--priority-${p})` }}
+                    />
+                    {PRIORITY_LABELS[p]}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
           <div className="flex justify-end gap-3 mt-6">

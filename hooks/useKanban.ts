@@ -2,14 +2,14 @@
 
 import { useCallback } from 'react';
 import { useLocalStorage } from './useLocalStorage';
-import { KanbanTask, ColumnId } from '@/types';
+import { KanbanTask, ColumnId, Priority, PRIORITY_ORDER } from '@/types';
 
 const STORAGE_KEY = 'vibe-board-kanban';
 
 export function useKanban() {
   const [tasks, setTasks] = useLocalStorage<KanbanTask[]>(STORAGE_KEY, []);
 
-  const addTask = useCallback((title: string, description: string, column: ColumnId) => {
+  const addTask = useCallback((title: string, description: string, column: ColumnId, priority: Priority = 'medium') => {
     const tasksInColumn = tasks.filter(t => t.column === column);
     const maxOrder = tasksInColumn.length > 0
       ? Math.max(...tasksInColumn.map(t => t.order))
@@ -20,6 +20,7 @@ export function useKanban() {
       title,
       description: description || undefined,
       column,
+      priority,
       createdAt: Date.now(),
       order: maxOrder + 1,
     };
@@ -62,7 +63,11 @@ export function useKanban() {
   const getTasksByColumn = useCallback((column: ColumnId) => {
     return tasks
       .filter(task => task.column === column)
-      .sort((a, b) => a.order - b.order);
+      .sort((a, b) => {
+        const priorityDiff = PRIORITY_ORDER[a.priority ?? 'medium'] - PRIORITY_ORDER[b.priority ?? 'medium'];
+        if (priorityDiff !== 0) return priorityDiff;
+        return a.order - b.order;
+      });
   }, [tasks]);
 
   return {
