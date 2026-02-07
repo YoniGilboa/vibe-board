@@ -47,59 +47,73 @@ export function AddTaskModal({ isOpen, column, onClose, onAdd }: AddTaskModalPro
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/70 backdrop-blur-[2px]"
         onClick={onClose}
       />
-      <div className="relative bg-[#1a1a1a] border border-white/10 rounded-lg w-full max-w-md mx-4 p-5 shadow-xl">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-base font-medium text-white/90">
-            Add to {COLUMN_TITLES[column]}
-          </h2>
+      <div className="relative bg-[var(--bg-elevated)] border border-[var(--border-default)] rounded-xl w-full max-w-md mx-4 p-6 shadow-2xl geo-corner animate-fade-up">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-5">
+          <div>
+            <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--text-muted)] mb-0.5">
+              new task
+            </p>
+            <h2 className="text-base font-medium text-[var(--text-primary)]">
+              Add to {COLUMN_TITLES[column]}
+            </h2>
+          </div>
           <button
             onClick={onClose}
-            className="p-1 text-white/40 hover:text-white/70 transition-colors"
+            className="p-1.5 text-[var(--text-muted)] hover:text-[var(--text-secondary)] transition-colors rounded-md hover:bg-[var(--bg-surface)]"
           >
-            <X size={18} />
+            <X size={16} />
           </button>
         </div>
+
         <form onSubmit={handleSubmit}>
-          <div className="space-y-3">
+          <div className="space-y-4">
             <div>
-              <label className="block text-xs text-white/50 mb-1.5">Title</label>
+              <label className="block text-[11px] font-mono uppercase tracking-wider text-[var(--text-tertiary)] mb-2">
+                Title
+              </label>
               <input
                 ref={inputRef}
                 type="text"
                 value={title}
                 onChange={e => setTitle(e.target.value)}
-                className="w-full bg-[#111] border border-white/10 rounded-lg px-3 py-2 text-sm text-white/90 placeholder-white/30 focus:outline-none focus:border-white/20"
-                placeholder="Task title"
+                className="w-full bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg px-3.5 py-2.5 text-sm text-[var(--text-primary)] transition-colors"
+                placeholder="What needs to be done?"
               />
             </div>
             <div>
-              <label className="block text-xs text-white/50 mb-1.5">
-                Description <span className="text-white/30">(optional)</span>
+              <label className="block text-[11px] font-mono uppercase tracking-wider text-[var(--text-tertiary)] mb-2">
+                Description <span className="text-[var(--text-muted)] normal-case tracking-normal">(optional)</span>
               </label>
               <textarea
                 value={description}
                 onChange={e => setDescription(e.target.value)}
                 rows={3}
-                className="w-full bg-[#111] border border-white/10 rounded-lg px-3 py-2 text-sm text-white/90 placeholder-white/30 focus:outline-none focus:border-white/20 resize-none"
+                className="w-full bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg px-3.5 py-2.5 text-sm text-[var(--text-primary)] resize-none transition-colors"
                 placeholder="Add more details..."
               />
             </div>
           </div>
-          <div className="flex justify-end gap-2 mt-5">
+          <div className="flex justify-end gap-3 mt-6">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-sm text-white/60 hover:text-white/80 transition-colors"
+              className="px-4 py-2 text-sm text-[var(--text-tertiary)] hover:text-[var(--text-secondary)] transition-colors"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={!title.trim()}
-              className="px-4 py-2 text-sm bg-slate-600 hover:bg-slate-500 disabled:bg-slate-800 disabled:text-white/30 text-white rounded-lg transition-colors"
+              className="px-5 py-2 text-sm font-medium rounded-lg transition-all btn-press"
+              style={{
+                backgroundColor: title.trim() ? 'var(--accent-amber)' : 'var(--bg-surface)',
+                color: title.trim() ? 'var(--bg-deep)' : 'var(--text-muted)',
+                opacity: title.trim() ? 1 : 0.6,
+              }}
             >
               Add Task
             </button>

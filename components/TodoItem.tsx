@@ -11,30 +11,30 @@ interface TodoItemProps {
 
 export function TodoItem({ todo, onToggle, onDelete }: TodoItemProps) {
   return (
-    <div className="flex items-center gap-2 group py-1.5">
+    <div className="flex items-center gap-2.5 group py-1.5 px-1 rounded-md hover:bg-[var(--bg-elevated)] transition-colors">
       <button
         onClick={() => onToggle(todo.id)}
-        className={`
-          flex-shrink-0 w-4 h-4 rounded border flex items-center justify-center transition-colors
-          ${todo.completed
-            ? 'bg-slate-600 border-slate-600 text-white'
-            : 'border-white/20 hover:border-white/40'
-          }
-        `}
+        className="flex-shrink-0 w-4 h-4 rounded border flex items-center justify-center transition-all"
+        style={{
+          backgroundColor: todo.completed ? 'var(--accent-amber)' : 'transparent',
+          borderColor: todo.completed ? 'var(--accent-amber)' : 'var(--text-muted)',
+          color: todo.completed ? 'var(--bg-deep)' : 'transparent',
+        }}
       >
-        {todo.completed && <Check size={12} />}
+        {todo.completed && <Check size={10} strokeWidth={3} />}
       </button>
       <span
-        className={`
-          flex-1 text-sm break-words
-          ${todo.completed ? 'text-white/40 line-through' : 'text-white/80'}
-        `}
+        className="flex-1 text-sm break-words transition-colors"
+        style={{
+          color: todo.completed ? 'var(--text-muted)' : 'var(--text-secondary)',
+          textDecoration: todo.completed ? 'line-through' : 'none',
+        }}
       >
         {todo.text}
       </span>
       <button
         onClick={() => onDelete(todo.id)}
-        className="p-1 text-white/20 hover:text-red-400/80 opacity-0 group-hover:opacity-100 transition-opacity"
+        className="p-1 text-[var(--text-muted)] hover:text-[var(--danger)] opacity-0 group-hover:opacity-100 transition-all"
         aria-label="Delete todo"
       >
         <Trash2 size={12} />

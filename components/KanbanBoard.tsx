@@ -49,7 +49,6 @@ export function KanbanBoard() {
 
     const overId = over.id as string;
 
-    // Check if dropping over a column
     if (COLUMNS.includes(overId as ColumnId)) {
       if (activeTask.column !== overId) {
         const targetTasks = getTasksByColumn(overId as ColumnId);
@@ -58,7 +57,6 @@ export function KanbanBoard() {
       return;
     }
 
-    // Check if dropping over another task
     const overTask = tasks.find(t => t.id === overId);
     if (!overTask) return;
 
@@ -80,12 +78,10 @@ export function KanbanBoard() {
 
     const overId = over.id as string;
 
-    // If dropped on a column directly
     if (COLUMNS.includes(overId as ColumnId)) {
-      return; // Already handled in dragOver
+      return;
     }
 
-    // If dropped on another task in same column - reorder
     const overTask = tasks.find(t => t.id === overId);
     if (overTask && activeTask.column === overTask.column && activeTask.id !== overTask.id) {
       const columnTasks = getTasksByColumn(activeTask.column);
@@ -115,7 +111,7 @@ export function KanbanBoard() {
         onDragOver={handleDragOver}
         onDragEnd={handleDragEnd}
       >
-        <div className="flex gap-4 overflow-x-auto pb-4">
+        <div className="flex gap-5 overflow-x-auto pb-4">
           {COLUMNS.map(columnId => (
             <KanbanColumn
               key={columnId}
@@ -128,7 +124,7 @@ export function KanbanBoard() {
         </div>
         <DragOverlay>
           {activeTask ? (
-            <div className="opacity-90">
+            <div className="rotate-[2deg] scale-105">
               <KanbanCard task={activeTask} onDelete={() => {}} />
             </div>
           ) : null}

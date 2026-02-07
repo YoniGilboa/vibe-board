@@ -21,14 +21,19 @@ export function NotesPanel() {
   };
 
   return (
-    <div className="bg-[#111] border border-white/5 rounded-lg p-4 flex-1 flex flex-col">
-      <h3 className="text-sm font-medium text-white/70 mb-3">Notes</h3>
+    <div className="relative bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg p-4 flex-1 flex flex-col geo-corner">
+      <div className="flex items-center gap-2.5 mb-3">
+        <div className="w-1.5 h-1.5 rounded-sm bg-[var(--col-progress)] opacity-50 rotate-45" />
+        <h3 className="text-xs font-medium uppercase tracking-[0.12em] text-[var(--text-secondary)]">
+          Notes
+        </h3>
+      </div>
       <textarea
         value={localNotes}
         onChange={e => handleChange(e.target.value)}
         onBlur={handleBlur}
         placeholder="Write notes here..."
-        className="flex-1 min-h-[150px] bg-[#1a1a1a] border border-white/10 rounded-lg px-3 py-2 text-sm text-white/80 placeholder-white/30 focus:outline-none focus:border-white/20 resize-none"
+        className="flex-1 min-h-[150px] bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-lg px-3.5 py-3 text-sm text-[var(--text-secondary)] resize-none transition-colors leading-relaxed"
       />
     </div>
   );

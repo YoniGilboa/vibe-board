@@ -26,8 +26,16 @@ export function TodoList() {
   const completedTodos = todos.filter(t => t.completed);
 
   return (
-    <div className="bg-[#111] border border-white/5 rounded-lg p-4">
-      <h3 className="text-sm font-medium text-white/70 mb-3">Quick Tasks</h3>
+    <div className="relative bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg p-4 geo-corner">
+      <div className="flex items-center gap-2.5 mb-3">
+        <div className="w-1.5 h-1.5 rounded-full bg-[var(--accent-amber)] opacity-50" />
+        <h3 className="text-xs font-medium uppercase tracking-[0.12em] text-[var(--text-secondary)]">
+          Quick Tasks
+        </h3>
+        <span className="text-[10px] font-mono text-[var(--text-muted)]">
+          {incompleteTodos.length}
+        </span>
+      </div>
 
       <div className="flex gap-2 mb-3">
         <input
@@ -36,12 +44,16 @@ export function TodoList() {
           onChange={e => setNewTodo(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Add a task..."
-          className="flex-1 bg-[#1a1a1a] border border-white/10 rounded-lg px-3 py-1.5 text-sm text-white/90 placeholder-white/30 focus:outline-none focus:border-white/20"
+          className="flex-1 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-lg px-3 py-2 text-sm text-[var(--text-primary)] transition-colors"
         />
         <button
           onClick={handleAdd}
           disabled={!newTodo.trim()}
-          className="p-2 bg-slate-600 hover:bg-slate-500 disabled:bg-slate-800 disabled:text-white/30 rounded-lg transition-colors"
+          className="p-2 rounded-lg transition-all btn-press"
+          style={{
+            backgroundColor: newTodo.trim() ? 'var(--accent-amber)' : 'var(--bg-card)',
+            color: newTodo.trim() ? 'var(--bg-deep)' : 'var(--text-muted)',
+          }}
         >
           <Plus size={14} />
         </button>
@@ -56,6 +68,9 @@ export function TodoList() {
             onDelete={deleteTodo}
           />
         ))}
+        {completedTodos.length > 0 && incompleteTodos.length > 0 && (
+          <div className="h-px bg-[var(--border-subtle)] my-2" />
+        )}
         {completedTodos.map(todo => (
           <TodoItem
             key={todo.id}
@@ -65,7 +80,9 @@ export function TodoList() {
           />
         ))}
         {todos.length === 0 && (
-          <p className="text-xs text-white/30 py-2 text-center">No tasks yet</p>
+          <p className="text-[11px] text-[var(--text-muted)] py-3 text-center italic">
+            No tasks yet
+          </p>
         )}
       </div>
     </div>

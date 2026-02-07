@@ -8,9 +8,10 @@ import { KanbanTask } from '@/types';
 interface KanbanCardProps {
   task: KanbanTask;
   onDelete: (id: string) => void;
+  columnColor?: string;
 }
 
-export function KanbanCard({ task, onDelete }: KanbanCardProps) {
+export function KanbanCard({ task, onDelete, columnColor }: KanbanCardProps) {
   const {
     attributes,
     listeners,
@@ -30,35 +31,43 @@ export function KanbanCard({ task, onDelete }: KanbanCardProps) {
       ref={setNodeRef}
       style={style}
       className={`
-        bg-[#1a1a1a] border border-white/10 rounded-lg p-3 mb-2
-        group cursor-default
-        ${isDragging ? 'opacity-50 shadow-lg' : ''}
+        relative bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-lg p-3.5 mb-2
+        group cursor-default card-hover
+        ${isDragging ? 'drag-ghost shadow-xl border-[var(--border-strong)]' : ''}
       `}
     >
-      <div className="flex items-start gap-2">
+      {/* Left color accent */}
+      {columnColor && (
+        <div
+          className="absolute left-0 top-2 bottom-2 w-[2px] rounded-full"
+          style={{ backgroundColor: columnColor, opacity: 0.3 }}
+        />
+      )}
+
+      <div className="flex items-start gap-2 pl-2">
         <button
           {...attributes}
           {...listeners}
-          className="mt-0.5 p-1 -ml-1 cursor-grab active:cursor-grabbing text-white/30 hover:text-white/60"
+          className="mt-0.5 p-0.5 -ml-1 cursor-grab active:cursor-grabbing text-[var(--text-muted)] hover:text-[var(--text-secondary)] transition-colors"
         >
-          <GripVertical size={14} />
+          <GripVertical size={13} />
         </button>
         <div className="flex-1 min-w-0">
-          <h4 className="text-sm font-medium text-white/90 break-words">
+          <h4 className="text-[13px] font-medium text-[var(--text-primary)] break-words leading-snug">
             {task.title}
           </h4>
           {task.description && (
-            <p className="text-xs text-white/50 mt-1 line-clamp-2 break-words">
+            <p className="text-[11px] text-[var(--text-tertiary)] mt-1.5 line-clamp-2 break-words leading-relaxed">
               {task.description}
             </p>
           )}
         </div>
         <button
           onClick={() => onDelete(task.id)}
-          className="p-1 text-white/20 hover:text-red-400/80 opacity-0 group-hover:opacity-100 transition-opacity"
+          className="p-1 text-[var(--text-muted)] hover:text-[var(--danger)] opacity-0 group-hover:opacity-100 transition-all"
           aria-label="Delete task"
         >
-          <Trash2 size={14} />
+          <Trash2 size={13} />
         </button>
       </div>
     </div>
