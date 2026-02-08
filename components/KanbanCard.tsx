@@ -2,16 +2,28 @@
 
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Trash2, GripVertical } from 'lucide-react';
+import { Trash2, GripVertical, Pencil } from 'lucide-react';
 import { KanbanTask, PRIORITY_LABELS } from '@/types';
+
+function formatCreatedAt(timestamp: number): string {
+  const date = new Date(timestamp);
+  const now = new Date();
+  const sameYear = date.getFullYear() === now.getFullYear();
+  return new Intl.DateTimeFormat('en-US', {
+    month: 'short',
+    day: 'numeric',
+    ...(sameYear ? {} : { year: 'numeric' }),
+  }).format(date);
+}
 
 interface KanbanCardProps {
   task: KanbanTask;
   onDelete: (id: string) => void;
+  onEdit: (task: KanbanTask) => void;
   columnColor?: string;
 }
 
-export function KanbanCard({ task, onDelete, columnColor }: KanbanCardProps) {
+export function KanbanCard({ task, onDelete, onEdit, columnColor }: KanbanCardProps) {
   const {
     attributes,
     listeners,
@@ -72,15 +84,28 @@ export function KanbanCard({ task, onDelete, columnColor }: KanbanCardProps) {
             >
               {PRIORITY_LABELS[task.priority ?? 'medium']}
             </span>
+            <span className="text-[var(--text-muted)] text-[10px] mx-1">·</span>
+            <span className="text-[10px] font-mono text-[var(--accent-amber)]">
+              {formatCreatedAt(task.createdAt)}
+            </span>
           </div>
         </div>
-        <button
-          onClick={() => onDelete(task.id)}
-          className="p-1 text-[var(--text-muted)] hover:text-[var(--danger)] opacity-0 group-hover:opacity-100 transition-all"
-          aria-label="Delete task"
-        >
-          <Trash2 size={13} />
-        </button>
+        <div className="flex items-center gap-0.5">
+          <button
+            onClick={() => onEdit(task)}
+            className="p-1 text-[var(--text-muted)] hover:text-[var(--accent-amber)] opacity-0 group-hover:opacity-100 transition-all"
+            aria-label="Edit task"
+          >
+            <Pencil size={13} />
+          </button>
+          <button
+            onClick={() => onDelete(task.id)}
+            className="p-1 text-[var(--text-muted)] hover:text-[var(--danger)] opacity-0 group-hover:opacity-100 transition-all"
+            aria-label="Delete task"
+          >
+            <Trash2 size={13} />
+          </button>
+        </div>
       </div>
     </div>
   );

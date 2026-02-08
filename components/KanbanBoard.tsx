@@ -18,16 +18,20 @@ import { ColumnId, KanbanTask, Priority } from '@/types';
 import { KanbanColumn } from './KanbanColumn';
 import { KanbanCard } from './KanbanCard';
 import { AddTaskModal } from './AddTaskModal';
+import { EditTaskModal } from './EditTaskModal';
+import { ConfirmDialog } from './ConfirmDialog';
 import { PriorityFilter } from './PriorityFilter';
 
 const COLUMNS: ColumnId[] = ['todo', 'in-progress', 'complete'];
 
 export function KanbanBoard() {
-  const { tasks, addTask, deleteTask, moveTask, getTasksByColumn } = useKanban();
+  const { tasks, addTask, updateTask, deleteTask, moveTask, getTasksByColumn } = useKanban();
   const [activeTask, setActiveTask] = useState<KanbanTask | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalColumn, setModalColumn] = useState<ColumnId>('todo');
   const [priorityFilter, setPriorityFilter] = useState<'all' | Priority>('all');
+  const [editingTask, setEditingTask] = useState<KanbanTask | null>(null);
+  const [deletingTask, setDeletingTask] = useState<KanbanTask | null>(null);
 
   const getFilteredTasksByColumn = useCallback((column: ColumnId) => {
     const sorted = getTasksByColumn(column);
@@ -110,6 +114,11 @@ export function KanbanBoard() {
     setModalOpen(true);
   };
 
+  const handleDeleteRequest = (id: string) => {
+    const task = tasks.find(t => t.id === id);
+    if (task) setDeletingTask(task);
+  };
+
   return (
     <div className="flex-1">
       <PriorityFilter value={priorityFilter} onChange={setPriorityFilter} tasks={tasks} />
@@ -126,7 +135,8 @@ export function KanbanBoard() {
               key={columnId}
               id={columnId}
               tasks={getFilteredTasksByColumn(columnId)}
-              onDeleteTask={deleteTask}
+              onDeleteTask={handleDeleteRequest}
+              onEditTask={setEditingTask}
               onAddClick={() => openAddModal(columnId)}
             />
           ))}
@@ -134,7 +144,7 @@ export function KanbanBoard() {
         <DragOverlay>
           {activeTask ? (
             <div className="rotate-[2deg] scale-105">
-              <KanbanCard task={activeTask} onDelete={() => {}} />
+              <KanbanCard task={activeTask} onDelete={() => {}} onEdit={() => {}} />
             </div>
           ) : null}
         </DragOverlay>
@@ -144,6 +154,21 @@ export function KanbanBoard() {
         column={modalColumn}
         onClose={() => setModalOpen(false)}
         onAdd={addTask}
+      />
+      <EditTaskModal
+        isOpen={!!editingTask}
+        task={editingTask}
+        onClose={() => setEditingTask(null)}
+        onSave={(id, updates) => updateTask(id, updates)}
+      />
+      <ConfirmDialog
+        isOpen={!!deletingTask}
+        onClose={() => setDeletingTask(null)}
+        onConfirm={() => {
+          if (deletingTask) deleteTask(deletingTask.id);
+        }}
+        title="Delete task?"
+        message={deletingTask ? `"${deletingTask.title}" will be permanently removed.` : ''}
       />
     </div>
   );

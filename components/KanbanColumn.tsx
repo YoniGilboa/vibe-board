@@ -2,7 +2,7 @@
 
 import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import { Plus } from 'lucide-react';
+import { Plus, Circle, Clock, CheckCircle2 } from 'lucide-react';
 import { KanbanTask, ColumnId, COLUMN_TITLES } from '@/types';
 import { KanbanCard } from './KanbanCard';
 
@@ -10,6 +10,7 @@ interface KanbanColumnProps {
   id: ColumnId;
   tasks: KanbanTask[];
   onDeleteTask: (id: string) => void;
+  onEditTask: (task: KanbanTask) => void;
   onAddClick: () => void;
 }
 
@@ -25,9 +26,16 @@ const COLUMN_ICONS: Record<ColumnId, string> = {
   'complete': '\u25CF',
 };
 
-export function KanbanColumn({ id, tasks, onDeleteTask, onAddClick }: KanbanColumnProps) {
+const EMPTY_STATES: Record<ColumnId, { icon: typeof Circle; message: string }> = {
+  'todo': { icon: Circle, message: 'No tasks yet \u2014 add one below' },
+  'in-progress': { icon: Clock, message: 'Move tasks here to start working' },
+  'complete': { icon: CheckCircle2, message: 'Finished tasks appear here' },
+};
+
+export function KanbanColumn({ id, tasks, onDeleteTask, onEditTask, onAddClick }: KanbanColumnProps) {
   const { setNodeRef, isOver } = useDroppable({ id });
   const color = COLUMN_COLORS[id];
+  const emptyState = EMPTY_STATES[id];
 
   return (
     <div className="flex-1 min-w-[220px] max-w-[340px]">
@@ -67,13 +75,16 @@ export function KanbanColumn({ id, tasks, onDeleteTask, onAddClick }: KanbanColu
 
         <SortableContext items={tasks.map(t => t.id)} strategy={verticalListSortingStrategy}>
           {tasks.map(task => (
-            <KanbanCard key={task.id} task={task} onDelete={onDeleteTask} columnColor={color} />
+            <KanbanCard key={task.id} task={task} onDelete={onDeleteTask} onEdit={onEditTask} columnColor={color} />
           ))}
         </SortableContext>
 
         {tasks.length === 0 && (
-          <div className="flex items-center justify-center h-20 text-[11px] text-[var(--text-tertiary)] italic">
-            Drop tasks here
+          <div className="flex flex-col items-center justify-center h-20 gap-1.5">
+            <emptyState.icon size={16} className="text-[var(--text-muted)]" style={{ opacity: 0.5 }} />
+            <span className="text-[11px] text-[var(--text-tertiary)] italic">
+              {emptyState.message}
+            </span>
           </div>
         )}
 
