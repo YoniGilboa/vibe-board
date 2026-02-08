@@ -73,9 +73,10 @@ export function KanbanCard({ task, onDelete, onEdit, columnColor }: KanbanCardPr
         <button
           {...attributes}
           {...listeners}
-          className="mt-0.5 p-0.5 -ml-1 cursor-grab active:cursor-grabbing text-[var(--text-muted)] hover:text-[var(--text-secondary)] transition-colors"
+          className="mt-0.5 p-1.5 -ml-1.5 cursor-grab active:cursor-grabbing text-[var(--text-muted)] hover:text-[var(--text-secondary)] transition-colors"
+          style={{ touchAction: 'none' }}
         >
-          <GripVertical size={13} />
+          <GripVertical size={14} />
         </button>
         <div className="flex-1 min-w-0">
           <h4 className="text-[13px] font-medium text-[var(--text-primary)] break-words leading-snug">
