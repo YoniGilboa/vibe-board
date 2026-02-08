@@ -8,13 +8,14 @@ interface EditTaskModalProps {
   isOpen: boolean;
   task: KanbanTask | null;
   onClose: () => void;
-  onSave: (id: string, updates: { title: string; description?: string; priority: Priority }) => void;
+  onSave: (id: string, updates: { title: string; description?: string; priority: Priority; dueDate?: number }) => void;
 }
 
 export function EditTaskModal({ isOpen, task, onClose, onSave }: EditTaskModalProps) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [priority, setPriority] = useState<Priority>('medium');
+  const [dueDate, setDueDate] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -22,6 +23,7 @@ export function EditTaskModal({ isOpen, task, onClose, onSave }: EditTaskModalPr
       setTitle(task.title);
       setDescription(task.description ?? '');
       setPriority(task.priority ?? 'medium');
+      setDueDate(task.dueDate ? new Date(task.dueDate).toISOString().split('T')[0] : '');
       setTimeout(() => inputRef.current?.focus(), 0);
     }
   }, [isOpen, task]);
@@ -43,6 +45,7 @@ export function EditTaskModal({ isOpen, task, onClose, onSave }: EditTaskModalPr
         title: title.trim(),
         description: description.trim() || undefined,
         priority,
+        dueDate: dueDate ? new Date(dueDate + 'T00:00:00').getTime() : undefined,
       });
       onClose();
     }
@@ -129,6 +132,18 @@ export function EditTaskModal({ isOpen, task, onClose, onSave }: EditTaskModalPr
                   </button>
                 ))}
               </div>
+            </div>
+            <div>
+              <label className="block text-[11px] font-mono uppercase tracking-wider text-[var(--text-tertiary)] mb-2">
+                Due Date <span className="text-[var(--text-muted)] normal-case tracking-normal">(optional)</span>
+              </label>
+              <input
+                type="date"
+                value={dueDate}
+                onChange={e => setDueDate(e.target.value)}
+                className="w-full bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg px-3.5 py-2.5 text-sm text-[var(--text-primary)] transition-colors"
+                style={{ colorScheme: 'dark' }}
+              />
             </div>
           </div>
           <div className="flex justify-end gap-3 mt-6">

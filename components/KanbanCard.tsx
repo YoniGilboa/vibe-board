@@ -16,6 +16,19 @@ function formatCreatedAt(timestamp: number): string {
   }).format(date);
 }
 
+function formatDueDate(timestamp: number): string {
+  const date = new Date(timestamp);
+  return new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric' }).format(date);
+}
+
+function isDueUrgent(dueDate: number, column: string): boolean {
+  if (column === 'complete') return false;
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+  const dueDayStart = new Date(new Date(dueDate).getFullYear(), new Date(dueDate).getMonth(), new Date(dueDate).getDate()).getTime();
+  return dueDayStart <= today;
+}
+
 interface KanbanCardProps {
   task: KanbanTask;
   onDelete: (id: string) => void;
@@ -88,6 +101,17 @@ export function KanbanCard({ task, onDelete, onEdit, columnColor }: KanbanCardPr
             <span className="text-[10px] font-mono text-[var(--accent-amber)] whitespace-nowrap">
               {formatCreatedAt(task.createdAt)}
             </span>
+            {task.dueDate && (
+              <>
+                <span className="text-[var(--text-muted)] text-[10px] flex-shrink-0">·</span>
+                <span
+                  className="text-[10px] font-mono whitespace-nowrap"
+                  style={{ color: isDueUrgent(task.dueDate, task.column) ? 'var(--danger)' : 'var(--text-tertiary)' }}
+                >
+                  Due {formatDueDate(task.dueDate)}
+                </span>
+              </>
+            )}
           </div>
         </div>
         <div className="flex items-center gap-0.5">

@@ -1,10 +1,12 @@
 'use client';
 
 import { KanbanBoard } from '@/components/KanbanBoard';
-import { TodoList } from '@/components/TodoList';
-import { NotesPanel } from '@/components/NotesPanel';
+import { Calendar } from '@/components/Calendar';
+import { useKanban } from '@/hooks/useKanban';
 
 export default function Home() {
+  const { tasks, addTask, updateTask, deleteTask, moveTask, getTasksByColumn } = useKanban();
+
   return (
     <main className="relative min-h-screen p-5 md:p-8 z-[1]">
       {/* Header */}
@@ -19,7 +21,7 @@ export default function Home() {
             </h1>
           </div>
           <div className="hidden md:block h-px flex-1 bg-gradient-to-r from-[var(--border-default)] to-transparent mb-1.5" />
-          <p className="hidden md:block text-[10px] font-mono text-[var(--text-secondary)] mb-1">
+          <p className="text-[10px] font-mono text-[var(--text-secondary)] mb-1">
             {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
           </p>
         </div>
@@ -28,7 +30,14 @@ export default function Home() {
       <div className="flex flex-col lg:flex-row gap-6">
         {/* Kanban Board - Main Area */}
         <div className="flex-1 min-w-0 animate-fade-up" style={{ animationDelay: '0.1s' }}>
-          <KanbanBoard />
+          <KanbanBoard
+            tasks={tasks}
+            addTask={addTask}
+            updateTask={updateTask}
+            deleteTask={deleteTask}
+            moveTask={moveTask}
+            getTasksByColumn={getTasksByColumn}
+          />
         </div>
 
         {/* Sidebar */}
@@ -36,8 +45,7 @@ export default function Home() {
           className="w-full lg:w-80 xl:w-88 flex-shrink-0 flex flex-col gap-5 animate-fade-up"
           style={{ animationDelay: '0.2s' }}
         >
-          <TodoList />
-          <NotesPanel />
+          <Calendar tasks={tasks} />
         </aside>
       </div>
     </main>

@@ -9,7 +9,7 @@ const STORAGE_KEY = 'vibe-board-kanban';
 export function useKanban() {
   const [tasks, setTasks] = useLocalStorage<KanbanTask[]>(STORAGE_KEY, []);
 
-  const addTask = useCallback((title: string, description: string, column: ColumnId, priority: Priority = 'medium') => {
+  const addTask = useCallback((title: string, description: string, column: ColumnId, priority: Priority = 'medium', dueDate?: number) => {
     const tasksInColumn = tasks.filter(t => t.column === column);
     const maxOrder = tasksInColumn.length > 0
       ? Math.max(...tasksInColumn.map(t => t.order))
@@ -22,6 +22,7 @@ export function useKanban() {
       column,
       priority,
       createdAt: Date.now(),
+      dueDate,
       order: maxOrder + 1,
     };
     setTasks(prev => [...prev, newTask]);

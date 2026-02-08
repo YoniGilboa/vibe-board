@@ -11,20 +11,8 @@ export interface KanbanTask {
   column: 'todo' | 'in-progress' | 'complete';
   priority: Priority;
   createdAt: number;
+  dueDate?: number;
   order: number;
-}
-
-export interface TodoItem {
-  id: string;
-  text: string;
-  completed: boolean;
-  createdAt: number;
-}
-
-export interface AppState {
-  kanbanTasks: KanbanTask[];
-  todos: TodoItem[];
-  notes: string;
 }
 
 export type ColumnId = 'todo' | 'in-progress' | 'complete';

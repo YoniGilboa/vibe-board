@@ -7,13 +7,13 @@ import {
   DragOverEvent,
   DragStartEvent,
   PointerSensor,
+  TouchSensor,
   useSensor,
   useSensors,
   closestCorners,
   DragOverlay,
 } from '@dnd-kit/core';
 import { arrayMove } from '@dnd-kit/sortable';
-import { useKanban } from '@/hooks/useKanban';
 import { ColumnId, KanbanTask, Priority } from '@/types';
 import { KanbanColumn } from './KanbanColumn';
 import { KanbanCard } from './KanbanCard';
@@ -24,8 +24,16 @@ import { PriorityFilter } from './PriorityFilter';
 
 const COLUMNS: ColumnId[] = ['todo', 'in-progress', 'complete'];
 
-export function KanbanBoard() {
-  const { tasks, addTask, updateTask, deleteTask, moveTask, getTasksByColumn } = useKanban();
+interface KanbanBoardProps {
+  tasks: KanbanTask[];
+  addTask: (title: string, description: string, column: ColumnId, priority: Priority, dueDate?: number) => void;
+  updateTask: (id: string, updates: Partial<Omit<KanbanTask, 'id' | 'createdAt'>>) => void;
+  deleteTask: (id: string) => void;
+  moveTask: (taskId: string, toColumn: ColumnId, newOrder: number) => void;
+  getTasksByColumn: (column: ColumnId) => KanbanTask[];
+}
+
+export function KanbanBoard({ tasks, addTask, updateTask, deleteTask, moveTask, getTasksByColumn }: KanbanBoardProps) {
   const [activeTask, setActiveTask] = useState<KanbanTask | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalColumn, setModalColumn] = useState<ColumnId>('todo');
@@ -43,6 +51,12 @@ export function KanbanBoard() {
     useSensor(PointerSensor, {
       activationConstraint: {
         distance: 5,
+      },
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 200,
+        tolerance: 5,
       },
     })
   );
