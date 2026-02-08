@@ -73,19 +73,19 @@ export function KanbanCard({ task, onDelete, onEdit, columnColor }: KanbanCardPr
               {task.description}
             </p>
           )}
-          <div className="flex items-center gap-1.5 mt-2">
+          <div className="flex items-center flex-nowrap gap-1.5 mt-2">
             <span
               className="w-[6px] h-[6px] rounded-full flex-shrink-0"
               style={{ backgroundColor: `var(--priority-${task.priority ?? 'medium'})` }}
             />
             <span
-              className="text-[10px] font-mono uppercase tracking-wider"
+              className="text-[10px] font-mono uppercase tracking-wider whitespace-nowrap"
               style={{ color: `var(--priority-${task.priority ?? 'medium'})` }}
             >
               {PRIORITY_LABELS[task.priority ?? 'medium']}
             </span>
-            <span className="text-[var(--text-muted)] text-[10px] mx-1">·</span>
-            <span className="text-[10px] font-mono text-[var(--accent-amber)]">
+            <span className="text-[var(--text-muted)] text-[10px] flex-shrink-0">·</span>
+            <span className="text-[10px] font-mono text-[var(--accent-amber)] whitespace-nowrap">
               {formatCreatedAt(task.createdAt)}
             </span>
           </div>
