@@ -2,7 +2,7 @@
 
 import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import { Plus, Circle, Clock, CheckCircle2 } from 'lucide-react';
+import { Plus, Circle, Clock } from 'lucide-react';
 import { KanbanTask, ColumnId, COLUMN_TITLES } from '@/types';
 import { KanbanCard } from './KanbanCard';
 
@@ -17,19 +17,16 @@ interface KanbanColumnProps {
 const COLUMN_COLORS: Record<ColumnId, string> = {
   'todo': 'var(--col-todo)',
   'in-progress': 'var(--col-progress)',
-  'complete': 'var(--col-complete)',
 };
 
 const COLUMN_ICONS: Record<ColumnId, string> = {
   'todo': '\u25CB',
   'in-progress': '\u25D4',
-  'complete': '\u25CF',
 };
 
 const EMPTY_STATES: Record<ColumnId, { icon: typeof Circle; message: string }> = {
   'todo': { icon: Circle, message: 'No tasks yet \u2014 add one below' },
   'in-progress': { icon: Clock, message: 'Move tasks here to start working' },
-  'complete': { icon: CheckCircle2, message: 'Finished tasks appear here' },
 };
 
 export function KanbanColumn({ id, tasks, onDeleteTask, onEditTask, onAddClick }: KanbanColumnProps) {
@@ -38,7 +35,7 @@ export function KanbanColumn({ id, tasks, onDeleteTask, onEditTask, onAddClick }
   const emptyState = EMPTY_STATES[id];
 
   return (
-    <div className="flex-1 min-w-[220px] max-w-[340px]">
+    <div className="flex-1 min-w-[280px] max-w-[500px]">
       {/* Column header */}
       <div className="flex items-center gap-2.5 mb-3 px-1">
         <span
@@ -88,15 +85,13 @@ export function KanbanColumn({ id, tasks, onDeleteTask, onEditTask, onAddClick }
           </div>
         )}
 
-        {id !== 'complete' && (
-          <button
-            onClick={onAddClick}
-            className="w-full py-2 px-3 mt-1 text-xs text-[var(--text-muted)] hover:text-[var(--text-secondary)] hover:bg-[var(--bg-surface)] rounded-md flex items-center justify-center gap-1.5 transition-colors btn-press"
-          >
-            <Plus size={13} />
-            Add task
-          </button>
-        )}
+        <button
+          onClick={onAddClick}
+          className="w-full py-2 px-3 mt-1 text-xs text-[var(--text-muted)] hover:text-[var(--text-secondary)] hover:bg-[var(--bg-surface)] rounded-md flex items-center justify-center gap-1.5 transition-colors btn-press"
+        >
+          <Plus size={13} />
+          Add task
+        </button>
       </div>
     </div>
   );

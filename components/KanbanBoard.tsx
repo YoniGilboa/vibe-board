@@ -22,7 +22,7 @@ import { EditTaskModal } from './EditTaskModal';
 import { ConfirmDialog } from './ConfirmDialog';
 import { PriorityFilter } from './PriorityFilter';
 
-const COLUMNS: ColumnId[] = ['todo', 'in-progress', 'complete'];
+const COLUMNS: ColumnId[] = ['todo', 'in-progress'];
 
 interface KanbanBoardProps {
   tasks: KanbanTask[];

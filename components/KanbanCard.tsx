@@ -21,8 +21,7 @@ function formatDueDate(timestamp: number): string {
   return new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric' }).format(date);
 }
 
-function isDueUrgent(dueDate: number, column: string): boolean {
-  if (column === 'complete') return false;
+function isDueUrgent(dueDate: number): boolean {
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
   const dueDayStart = new Date(new Date(dueDate).getFullYear(), new Date(dueDate).getMonth(), new Date(dueDate).getDate()).getTime();
@@ -69,6 +68,24 @@ export function KanbanCard({ task, onDelete, onEdit, columnColor }: KanbanCardPr
         />
       )}
 
+      {/* Action buttons - absolute so they don't eat layout space */}
+      <div className="absolute top-2 right-2 flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-all">
+        <button
+          onClick={() => onEdit(task)}
+          className="p-1 text-[var(--text-muted)] hover:text-[var(--accent-amber)]"
+          aria-label="Edit task"
+        >
+          <Pencil size={13} />
+        </button>
+        <button
+          onClick={() => onDelete(task.id)}
+          className="p-1 text-[var(--text-muted)] hover:text-[var(--danger)]"
+          aria-label="Delete task"
+        >
+          <Trash2 size={13} />
+        </button>
+      </div>
+
       <div className="flex items-start gap-2 pl-2">
         <button
           {...attributes}
@@ -107,29 +124,13 @@ export function KanbanCard({ task, onDelete, onEdit, columnColor }: KanbanCardPr
                 <span className="text-[var(--text-muted)] text-[10px] flex-shrink-0">·</span>
                 <span
                   className="text-[10px] font-mono whitespace-nowrap"
-                  style={{ color: isDueUrgent(task.dueDate, task.column) ? 'var(--danger)' : 'var(--text-tertiary)' }}
+                  style={{ color: isDueUrgent(task.dueDate) ? 'var(--danger)' : 'var(--text-tertiary)' }}
                 >
                   Due {formatDueDate(task.dueDate)}
                 </span>
               </>
             )}
           </div>
-        </div>
-        <div className="flex items-center gap-0.5">
-          <button
-            onClick={() => onEdit(task)}
-            className="p-1 text-[var(--text-muted)] hover:text-[var(--accent-amber)] opacity-0 group-hover:opacity-100 transition-all"
-            aria-label="Edit task"
-          >
-            <Pencil size={13} />
-          </button>
-          <button
-            onClick={() => onDelete(task.id)}
-            className="p-1 text-[var(--text-muted)] hover:text-[var(--danger)] opacity-0 group-hover:opacity-100 transition-all"
-            aria-label="Delete task"
-          >
-            <Trash2 size={13} />
-          </button>
         </div>
       </div>
     </div>

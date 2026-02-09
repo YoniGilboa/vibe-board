@@ -54,12 +54,13 @@ export function EditTaskModal({ isOpen, task, onClose, onSave }: EditTaskModalPr
   if (!isOpen || !task) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div className="fixed inset-0 z-50 overflow-y-auto">
       <div
-        className="absolute inset-0 bg-black/70 backdrop-blur-[2px]"
+        className="fixed inset-0 bg-black/70 backdrop-blur-[2px]"
         onClick={onClose}
       />
-      <div className="relative bg-[var(--bg-elevated)] border border-[var(--border-default)] rounded-xl w-full max-w-md mx-4 p-6 shadow-2xl geo-corner animate-fade-up">
+      <div className="flex min-h-full items-end sm:items-center justify-center p-4">
+      <div className="relative bg-[var(--bg-elevated)] border border-[var(--border-default)] rounded-xl w-full max-w-md p-6 shadow-2xl geo-corner animate-fade-up">
         {/* Header */}
         <div className="flex items-center justify-between mb-5">
           <div>
@@ -168,6 +169,7 @@ export function EditTaskModal({ isOpen, task, onClose, onSave }: EditTaskModalPr
             </button>
           </div>
         </form>
+      </div>
       </div>
     </div>
   );

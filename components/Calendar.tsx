@@ -21,20 +21,19 @@ function isToday(date: Date): boolean {
 function getWeekDays(anchor: Date): Date[] {
   const d = new Date(anchor);
   const day = d.getDay();
-  const diff = day === 0 ? -6 : 1 - day; // Monday start
-  const monday = new Date(d.getFullYear(), d.getMonth(), d.getDate() + diff);
-  return Array.from({ length: 7 }, (_, i) => new Date(monday.getFullYear(), monday.getMonth(), monday.getDate() + i));
+  const sunday = new Date(d.getFullYear(), d.getMonth(), d.getDate() - day);
+  return Array.from({ length: 7 }, (_, i) => new Date(sunday.getFullYear(), sunday.getMonth(), sunday.getDate() + i));
 }
 
 function getMonthGrid(year: number, month: number): Date[] {
   const firstDay = new Date(year, month, 1);
   const dayOfWeek = firstDay.getDay();
-  const startOffset = dayOfWeek === 0 ? -6 : 1 - dayOfWeek; // Monday start
+  const startOffset = -dayOfWeek; // Sunday start
   const startDate = new Date(year, month, 1 + startOffset);
   return Array.from({ length: 42 }, (_, i) => new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + i));
 }
 
-const DAY_HEADERS = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
+const DAY_HEADERS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
 
 interface CalendarProps {
   tasks: KanbanTask[];
@@ -101,7 +100,6 @@ export function Calendar({ tasks }: CalendarProps) {
     switch (column) {
       case 'todo': return 'var(--col-todo)';
       case 'in-progress': return 'var(--col-progress)';
-      case 'complete': return 'var(--col-complete)';
       default: return 'var(--text-muted)';
     }
   };
@@ -160,7 +158,7 @@ export function Calendar({ tasks }: CalendarProps) {
       {/* Day headers */}
       <div className="grid grid-cols-7 gap-px mb-1">
         {DAY_HEADERS.map(d => (
-          <div key={d} className="text-center text-[9px] font-mono uppercase tracking-wider text-[var(--text-muted)] py-1">
+          <div key={d} className="text-center text-[9px] font-mono uppercase tracking-wider text-[var(--priority-medium)] py-1">
             {d}
           </div>
         ))}

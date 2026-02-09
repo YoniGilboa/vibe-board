@@ -8,17 +8,16 @@ export interface KanbanTask {
   id: string;
   title: string;
   description?: string;
-  column: 'todo' | 'in-progress' | 'complete';
+  column: 'todo' | 'in-progress';
   priority: Priority;
   createdAt: number;
   dueDate?: number;
   order: number;
 }
 
-export type ColumnId = 'todo' | 'in-progress' | 'complete';
+export type ColumnId = 'todo' | 'in-progress';
 
 export const COLUMN_TITLES: Record<ColumnId, string> = {
   'todo': 'Todo',
   'in-progress': 'In Progress',
-  'complete': 'Complete',
 };

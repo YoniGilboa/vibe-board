@@ -16,7 +16,7 @@ export function useKanban() {
       : -1;
 
     const newTask: KanbanTask = {
-      id: crypto.randomUUID(),
+      id: Math.random().toString(36).slice(2) + Date.now().toString(36),
       title,
       description: description || undefined,
       column,
