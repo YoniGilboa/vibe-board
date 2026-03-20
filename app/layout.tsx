@@ -1,6 +1,7 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Outfit, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import ServiceWorkerRegister from "./sw-register";
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -17,6 +18,17 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "Vibe Board",
   description: "A clean kanban board for vibe coders",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Vibe Board",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#e0ad5a",
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({
@@ -30,6 +42,7 @@ export default function RootLayout({
         className={`${outfit.variable} ${jetbrainsMono.variable} antialiased min-h-screen bg-[var(--bg-deep)]`}
       >
         {children}
+        <ServiceWorkerRegister />
       </body>
     </html>
   );
